@@ -3,9 +3,9 @@ import json
 from kafka import KafkaProducer
 from datetime import datetime
 import time
+import os
 
-
-API_KEY = "f627c5a17d6b7374370f18d2b1db8a05"
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
 CITIES = ["Almaty", "Astana", "Shymkent", "Aktobe", "Karaganda", "Oskemen"]
 KAFKA_TOPIC = "raw_weather"
 KAFKA_BOOTSTRAP_SERVERS = "localhost:9092"
