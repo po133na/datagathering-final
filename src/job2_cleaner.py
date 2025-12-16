@@ -1,7 +1,7 @@
 import json
 from kafka import KafkaConsumer
 from datetime import datetime
-from db_utils import get_connection, init_db
+from src.db_utils import get_connection, init_db
 
 KAFKA_TOPIC = "raw_weather"
 KAFKA_BOOTSTRAP_SERVERS = "kafka:9092"
@@ -41,7 +41,7 @@ def run_cleaner():
         value_deserializer=lambda v: json.loads(v.decode("utf-8"))
     )
 
-    inserted = 0
+    count = 0
     for message in consumer:
         cleaned = clean_message(message.value)
         if not cleaned:
@@ -56,8 +56,8 @@ def run_cleaner():
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, cleaned)
 
-        inserted += 1
-        if inserted >= 500:
+        count += 1
+        if count >= 500:
             break
 
     conn.commit()

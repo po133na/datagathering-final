@@ -1,6 +1,9 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+
+import sys
+sys.path.append("/opt/airflow")
 from src.job2_cleaner import run_cleaner
 
 with DAG(
