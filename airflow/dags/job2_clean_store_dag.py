@@ -7,6 +7,8 @@ sys.path.append("/opt/airflow")
 from src.job2_cleaner import run_cleaner
 
 with DAG(
+    max_active_runs=1,
+    concurrency=1,
     dag_id="dag2_clean_and_store",
     start_date=datetime(2024, 1, 1),
     schedule_interval="@hourly",

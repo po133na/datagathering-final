@@ -3,13 +3,23 @@ from pathlib import Path
 
 DB_PATH = Path("/opt/airflow/data/app.db")
 
+
 def get_connection():
-    return sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(
+        DB_PATH,
+        timeout=30,
+        isolation_level=None
+    )
+    conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("PRAGMA synchronous=NORMAL;")
+    return conn
+
 
 def init_db():
     conn = get_connection()
     cur = conn.cursor()
 
+    # Cleaned events table (from DAG 2)
     cur.execute("""
     CREATE TABLE IF NOT EXISTS events (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,15 +35,18 @@ def init_db():
     )
     """)
 
+    # Daily analytics summary table (from DAG 3)
     cur.execute("""
     CREATE TABLE IF NOT EXISTS daily_summary (
         date TEXT,
         city TEXT,
-        avg_temp REAL,
-        min_temp REAL,
-        max_temp REAL,
+        avg_temperature REAL,
+        min_temperature REAL,
+        max_temperature REAL,
         avg_humidity REAL,
-        record_count INTEGER,
+        avg_pressure REAL,
+        avg_wind_speed REAL,
+        records_count INTEGER,
         PRIMARY KEY (date, city)
     )
     """)
