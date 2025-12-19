@@ -12,7 +12,7 @@ with DAG(
     dag_id="dag3_daily_summary",
     max_active_runs=1,
     concurrency=1,
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2025, 12, 15),
     schedule_interval="@daily",
     catchup=False,
     tags=["weather", "analytics", "sqlite"]

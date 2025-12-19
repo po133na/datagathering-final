@@ -10,7 +10,7 @@ with DAG(
     max_active_runs=1,
     concurrency=1,
     dag_id="dag2_clean_and_store",
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2025, 12, 17),
     schedule_interval="@hourly",
     catchup=False,
     tags=["weather", "batch", "sqlite"]
